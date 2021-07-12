@@ -1,0 +1,62 @@
+// (1290) Convert Binary Number in a Linked List to Integer - https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ 
+class Solution {
+public:
+    int getDecimalValue(ListNode* head) {
+        
+        ///// The most recent Try
+        ///// Runtime 0ms, Memory 8.2MB
+        int res = head->val;
+        
+        while(head = head->next){
+            res = (res << 1) + head->val;
+        }
+        
+        return res;
+               
+        
+        /* 2nd Try (Shift Operation)
+        ///// Runtime 4ms, Memory 8.1MB
+        int res = 0;
+        
+        while(head){   
+            res = (res << 1) + head->val;
+            head = head->next;
+        }
+        
+        return res;
+        */
+        
+        /*
+        /// 1st Try
+        ///// Runtime 4ms, Memory 8.4MB
+        ListNode *h_ptr = head;
+        int cnt = 0;
+        int res = 0;
+        
+        while(h_ptr){
+            cnt++;
+            h_ptr = h_ptr->next;
+        }
+        
+        while(head){
+            res += head->val * pow(2,cnt-1);
+            head = head->next;
+            cnt--;
+        }
+        
+        return res;
+        */
+    }
+};
