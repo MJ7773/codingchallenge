@@ -1,5 +1,6 @@
 #include <map>
 
+/*********** Sorting *********/
 class Solution {
 public:
     bool containsDuplicate(vector<int>& nums) {
@@ -15,7 +16,7 @@ public:
 /////Space complexity: O(1)////////
 
 
-/**********************
+/********************** Hash Table
 #include <map>
 
 class Solution {
