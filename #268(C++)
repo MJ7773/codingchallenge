@@ -1,6 +1,21 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
+        int sum = 0;
+        for(int i : nums)sum+=i;
+        int n = nums.size();
+        int sum1 = n*(n+1)/2;
+        return sum1-sum;        
+    }
+};
+////// T: O(n)
+
+
+
+/***************************
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
         int n = nums.size();
         int x = 0;
         for(int i=1;i<=n;++i)
@@ -10,3 +25,4 @@ public:
 };
 
 ////// T: O(n)
+****************************/
