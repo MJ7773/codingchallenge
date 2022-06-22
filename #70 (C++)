@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int climbStairs(int n) {
+        if (n < 3) return n;
+
+        int ways_2st = 1;
+        int ways_1st = 2;
+        int res;
+
+        for (int i = 3; i <= n; i++) {
+            res = ways_2st + ways_1st; //f(n) = f(n-2) + f(n-1)
+            ways_2st = ways_1st;
+            ways_1st = res;
+        }
+        return res;
+    }
+};
+
+//O(1)
+//Take sum of the cases of (taking one more step at once) + (taking two more steps at once)
