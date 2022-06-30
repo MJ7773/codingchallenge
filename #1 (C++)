@@ -9,8 +9,8 @@ public:
             seek = target - nums[i];
             
             if( hash.find(seek) != hash.end() ){ //"seek" is found in hash
-                idx.push_back(hash[seek]);
-                idx.push_back(i);
+                idx.push_back(hash[seek]); //store the pair index
+                idx.push_back(i); //store the current index
                 return idx;
             }
             hash[nums[i]] = i;
