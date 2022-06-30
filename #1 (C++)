@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int,int> hash;
+        vector<int> idx;
+        int seek;
+        
+        for(int i=0; i<nums.size(); i++){
+            seek = target - nums[i];
+            
+            if( hash.find(seek) != hash.end() ){ //"seek" is found in hash
+                idx.push_back(hash[seek]); //store the pair index
+                idx.push_back(i); //store the current index
+                return idx;
+            }
+            hash[nums[i]] = i;
+        }
+        return idx;
+    }
+};
+
+//////// T : O(n)
