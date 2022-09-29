@@ -30,7 +30,7 @@ public:
         
         /* 2nd Try (Shift Operation)
         ///// Runtime 4ms, Memory 8.1MB
-        int res = 0;
+        int res = 0; 
         
         while(head){   
             res = (res << 1) + head->val;
