@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
+        
         unordered_map<int,int> hash;
         vector<int> idx;
         int seek;
@@ -8,8 +9,8 @@ public:
         for(int i=0; i<nums.size(); i++){
             seek = target - nums[i];
             
-            if( hash.find(seek) != hash.end() ){ //"seek" is found in hash
-                idx.push_back(hash[seek]); //store the pair index
+            if( hash.find(seek) != hash.end() ){ //O(1), "seek" is found in hash
+                idx.push_back(hash[seek]); //O(1), store the pair index
                 idx.push_back(i); //store the current index
                 return idx;
             }
@@ -19,4 +20,5 @@ public:
     }
 };
 
-//////// T : O(n)
+
+////////// T = O(1)
