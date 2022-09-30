@@ -8,7 +8,7 @@ class Solution {
 public:
     bool containsDuplicate(vector<int>& nums) {
         unordered_set<int> s;
-        for(int num : nums){ //////////////////////////worst-case O(n)
+        for(int num : nums){ //////////////////////////worst-case O(n), avg O(1)
             if(!s.insert(num).second) return true;
         }
         return false;
