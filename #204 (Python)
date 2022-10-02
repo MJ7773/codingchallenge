@@ -1,0 +1,42 @@
+//// Sieve of Eratosthenes
+
+class Solution:
+    def countPrimes(self, n) :
+        check, prime = [0]*n, 0
+        
+        for i in range(2, n):
+            if check[i]: continue
+                
+            prime += 1
+            check[ i*i : n : i ] = [1] * ( ( (n - 1) // i ) - i + 1 ) //Extended slice
+            
+        return prime
+
+
+
+
+
+
+///////////////// Below also works for the answer but Time Limit Exceeded //////////////////////////
+class Solution(object):
+    def countPrimes(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n<2 : return 0
+
+        prime = [ True ] * n
+        prime[0] = prime[1] = False
+        
+        for i in range(2, n) :
+            if prime[i] == False : continue
+            
+            j = 2*i
+            while j<n:
+                prime[j] = False
+                j += i          
+        
+        return prime.count(True)
+            
+        
