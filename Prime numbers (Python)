@@ -1,0 +1,29 @@
+from os import *
+from sys import *
+from collections import *
+from math import *
+
+check = [False] * ( 1000001 ) 
+primes = [0] * ( 1000001 ) 
+cnt = 0
+for i in range(2, 1000001):
+    primes[i] = cnt
+    if check[i] == True : continue
+
+    cnt += 1
+    primes[i] += 1
+    check[ i*i : 1000001 : i ] = [True] * ( (1000000)//i - i + 1 )
+
+Q = int( input() )
+
+for _ in range(Q):
+    [A, B, K] = list( map(int, input().split(' ') ) ) 
+
+    l, h = A, B
+    while l <= h :
+        mid = (l+h) // 2     
+        if primes[mid] - primes[A-1] >= K: h = mid-1
+        else: l = mid+1 
+     
+    if l <= B: print(l)
+    else: print(-1)
