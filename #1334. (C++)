@@ -1,0 +1,111 @@
+
+class Solution {
+public:
+  int findTheCity(int n, vector<vector<int>>& edges, int t) {
+    vector< vector<pair<int, int>> > g(n);
+    for (const auto& e : edges) {
+      g[e[0]].emplace_back(e[1], e[2]);
+      g[e[1]].emplace_back(e[0], e[2]);
+    }
+    
+    // Returns the number of nodes within t from s.
+    auto dijkstra = [&](int s) {
+      vector<int> dist(n, INT_MAX / 2);
+      set<pair<int, int>> q; // <dist, node>
+      vector<set<pair<int, int>>::const_iterator> its(n);
+      dist[s] = 0;
+      for (int i = 0; i < n; ++i)
+        its[i] = q.emplace(dist[i], i).first;
+      while (!q.empty()) {
+        auto it = cbegin(q);
+        int d = it->first;
+        int u = it->second;
+        q.erase(it);        
+        if (d > t) break; // pruning
+        for (const auto& p : g[u]) {
+          int v = p.first;
+          int w = p.second;
+          if (dist[v] <= d + w) continue;
+          // Decrease key
+          q.erase(its[v]);
+          its[v] = q.emplace(dist[v] = d + w, v).first;
+        }
+      }
+      return count_if(begin(dist), end(dist), [t](int d) { return d <= t; });
+    };
+      
+    
+    int ans = -1;
+    int min_nb = INT_MAX;
+    for (int i = 0; i < n; ++i) {
+      int nb = dijkstra(i);
+      if (nb <= min_nb) {
+        min_nb = nb;
+        ans = i;
+      }
+    }
+    
+    return ans;
+  }
+};
+
+///////T: O(V * ElogV) / worst O(n^3*logn), best O(n^2*logn)
+///////S: O(V + E)
+
+
+
+
+///////Before Optimize
+
+int dijkstra(int i, vector< priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> > nodes, int thold){
+
+    int cur, earlier, to, cnt=0, cost;
+    vector<bool> tree(nodes.size());
+
+    while(1){
+        if( nodes[i].empty() || nodes[i].top().first > thold ) return cnt; //if there's no edge then return or the shortest edge exceeds the threshold
+
+        cur = nodes[i].top().first;
+        to = nodes[i].top().second;
+
+        if(tree[to]==false){
+            earlier = to;
+            tree[earlier] = true;
+            cnt++;
+        }
+        nodes[i].pop(); //remove the edge since it's connected to the node     
+
+        while( !nodes[earlier].empty() ){
+            cost = cur + nodes[earlier].top().first;
+            to = nodes[earlier].top().second;
+            if( cost <= thold && to != i ) nodes[i].emplace(cost, to);        
+            nodes[earlier].pop();
+        }
+    }
+    return cnt;
+}
+
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        vector< priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> > nodes(n); 
+        
+ 
+        for(vector e : edges){
+            nodes[ e[0] ].emplace( e[2],e[1] ); //adjacency list + min heap
+            nodes[ e[1] ].emplace( e[2],e[0] ); //adjacency list + min heap
+        }
+
+        int min_cities = n, num_cities;
+        int res = 0;
+
+        for(int i=0; i<n; i++){
+            num_cities = dijkstra(i, nodes, distanceThreshold);
+            if(num_cities <= min_cities) {
+                res = i;
+                min_cities = num_cities;
+            }
+        }
+        return res;
+    }
+};
