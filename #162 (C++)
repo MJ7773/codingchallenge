@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        //binary search
+        
+        int low=0, high=nums.size(), mid;
+        
+        while(low < high){
+            mid = (low+high)/2;
+            
+            if(nums[mid] > nums[mid+1] ){
+                high = mid;
+            }
+            else low = mid+1; //exclude mid from consideration since mid<mid+1
+        }     
+        
+        return low;        
+    }
+};
+
+///// T: O(logn)
