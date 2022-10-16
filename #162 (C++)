@@ -3,7 +3,7 @@ public:
     int findPeakElement(vector<int>& nums) {
         //binary search
         
-        int low=0, high=nums.size(), mid;
+        int low=0, high=nums.size()-1, mid;
         
         while(low < high){
             mid = (low+high)/2;
