@@ -1,0 +1,37 @@
+////////// T = O(n)
+
+class Solution {
+public:
+    vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
+
+        if(original.size() != m*n) return {};
+        
+        vector<vector<int>> res(m);
+        int i=1;
+        for(int idx=0; idx<original.size(); idx++){
+            res[i-1].push_back(original[idx]);
+            if( (i*n)-1 == idx ) i++;           
+        }
+            
+        return res;
+    }
+};
+
+
+
+class Solution {
+public:
+    vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
+
+        if(original.size() != m*n) return {};
+        
+        vector<vector<int>> res;
+        
+        for(int idx=0; idx<original.size(); idx+=n){         
+            vector<int> aux(&original[idx], &original[idx+n]);
+			res.push_back(aux);          
+        }
+            
+        return res;
+    }
+};
