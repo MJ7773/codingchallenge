@@ -1,0 +1,26 @@
+//Approach : ans[i] = multification(nums[0~(i-1)] * multification(nums[(i+1)~(len-1)]
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int len = nums.size();
+        vector<int> ans(len, 1);
+        
+        ans[0] = nums[0];
+        for(int i=1; i<len; i++){
+            ans[i] = ans[i-1] * nums[i];
+        }
+        
+        ans[len-1] = ans[len-2];
+        int p = nums[len-1];
+        for(int i=len-2; i>0; i--){
+            ans[i] = p * ans[i-1];
+            p = p * nums[i];
+        }
+        ans[0] = p;
+        
+        return ans;
+    }
+};
+
+////// T = O(n)
