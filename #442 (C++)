@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> ans;
+        
+        for(int val : nums){
+            if( nums[abs(val)-1] < 0 ) ans.push_back(abs(val));
+            else nums[abs(val)-1] *= -1;
+        }
+        return ans;
+    }
+};
+///// T = O(n)
+
+
+
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        unordered_set<int> s;
+        vector<int> ans;
+        
+        for(int i=0; i<nums.size(); i++){
+            if(!s.insert(nums[i]).second) ans.push_back(nums[i]);
+        }
+        return ans;
+    }
+};
+
+//// T = O(n)
+//// S = O(n)
