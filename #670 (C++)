@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        string numstr = to_string(num);
+        int max_idx = -1, max_digit = -1;
+        int lidx = -1, ridx = -1;        
+        
+        for(int i=numstr.size()-1; i>=0; --i){
+            if(numstr[i] > max_digit){ // current digit is the largest by far
+                max_digit = numstr[i];
+                max_idx = i;
+                continue;
+            }
+            if(numstr[i] < max_digit){
+                lidx = i;
+                ridx = max_idx;               
+            }
+        }
+        if(lidx == -1) return num;
+        swap(numstr[lidx], numstr[ridx]);
+        
+        return stoi(numstr);
+    }
+};
