@@ -1,0 +1,104 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        
+        int n=matrix.size();
+        int m=matrix[0].size();
+        
+        int left=0, right=m-1, bottom=n-1, top=0;
+        int direction = 1;
+        
+        vector<int> v;
+        
+        while(left<=right && top<=bottom)
+        {
+            if(direction==1)
+            {
+                for(int i=left; i<=right; i++) v.push_back(matrix[top][i]);
+                direction=2;
+                top++;
+            }
+            
+            else if(direction==2)
+            {
+                for(int i=top; i<=bottom; i++) v.push_back(matrix[i][right]);
+                direction=3;
+                right--;
+            }
+            
+            else if(direction==3)
+            {
+                for(int i=right; i>=left; i--) v.push_back(matrix[bottom][i]);
+                direction=4;
+                bottom--;
+            }
+            
+            else if(direction==4)
+            {
+                for(int i=bottom; i>=top; i--) v.push_back(matrix[i][left]);
+                direction=1;
+                left++;
+            }
+        }
+        return v; 
+    }
+};
+
+///// T = O(m*n)
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        
+        vector<int> ans;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        
+        int t=m*n, i=0, j=0;
+        
+        bool right=true, down=false, left=false, up=false;
+        m--;
+        n--;
+        
+        int visited_i=0, visited_j=0;
+        
+        while( t-- ){
+            ans.push_back(matrix[i][j]);
+            cout<<i<<" "<<j<<endl;
+            
+            if(right && j==n-visited_j){
+                right = false;
+                down = true;
+                cout<<"go down"<<endl;
+            }
+            
+            else if(down && i==m-visited_i){
+                down = false;
+                left = true;
+                cout<<"go left"<<endl;
+            }
+            
+            else if(left && j==0+visited_j){
+                visited_i++;
+                left = false;
+                up = true;
+                cout<<"go up"<<endl;
+            }
+            
+            else if(up && i==visited_i){
+                visited_j++;
+                up = false;
+                right = true;
+                cout<<"go right"<<endl;
+            }
+            
+            if(right) j++;
+            else if(down) i++;
+            else if(left) j--;
+            else if(up) i--;            
+        }
+        return ans;
+    }
+};
+
+/// T = O(m*n)
