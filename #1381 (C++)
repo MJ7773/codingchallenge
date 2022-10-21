@@ -1,0 +1,37 @@
+class CustomStack {
+    int idx, len;
+    int* arr;
+public:
+    CustomStack(int maxSize) {
+        arr = new int[maxSize];
+        idx = 0;
+        len = maxSize;
+    }
+    
+    void push(int x) {
+        if(idx == len) return;      
+        arr[idx++] = x;
+    }
+    
+    int pop() {
+        if(idx==0) return -1;
+        return arr[--idx];
+    }
+    
+    void increment(int k, int val) {
+        int i = 0;
+        while(k--){
+            if(i>=idx) return ;
+            arr[i] += val;
+            i++;
+        }
+    }
+};
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack* obj = new CustomStack(maxSize);
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * obj->increment(k,val);
+ */
