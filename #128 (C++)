@@ -1,0 +1,64 @@
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> s(begin(nums), end(nums)); //unordered_set : Worst.O(n) agv.O(1)
+        int longest = 0;
+        for(auto& num : s){
+            if(s.count(num - 1)) continue; //if there's no (num-1) in the set = the current num is the smallest in a consecutive numbers
+            int j = 1;
+            while(s.count(num + j)) j++;
+            longest = max(longest, j);
+        }
+        return longest;
+    }
+};
+/// T = O(n)
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int max_len = 0;
+        unordered_set<int> num_set(nums.begin(), nums.end()); //unordered_set : Worst.O(n) agv.O(1)
+        for (int num : nums) {
+            if (num_set.find(num - 1) == num_set.end()) { //if there's no (num-1) in the set = the current num is the smallest in a consecutive numbers
+                int curr_num = num;
+                int curr_len = 1;
+                while (num_set.find(curr_num + 1) != num_set.end()) { //count consecutive nums larger than the current num
+                    curr_num++;
+                    curr_len++;
+                }
+                max_len = max(max_len, curr_len);
+            }
+        }
+        return max_len;
+    }
+};
+// T = O(n)
+
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        multiset<int> s;
+        
+        if(nums.empty()) return 0;
+        
+        for(int n : nums) s.insert(n); // insert = O(longn) but because of O(n) from for iteration => O(nlogn)
+        
+        int maxSeq=0, seq=1, previous=*s.begin();
+        s.erase(s.find(previous)); //erase only 1 of multi element
+        
+        for(int it : s){
+            if(previous == it) continue;
+            else if(++previous == it) seq++;
+            else{
+                previous = it;
+                if(seq > maxSeq) maxSeq = seq;
+                seq = 1;
+            }      
+        }
+        if(seq > maxSeq) maxSeq = seq;
+        return maxSeq;
+    }
+};
+// T = O(nlogn)
