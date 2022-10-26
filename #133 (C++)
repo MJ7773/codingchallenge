@@ -1,0 +1,52 @@
+//DFS
+class Solution {
+public:
+    unordered_map<Node* , Node*> m; // to check whwther we have a copy of node or not 
+    
+    Node* cloneGraph(Node* node) {
+        if(node == NULL)  return NULL;
+        
+        // for a node, we will check whether we already creates a copy of thiis or not. 
+        
+        if(m.find(node) == m.end()){
+            m[node] = new Node(node -> val); // make a copy
+            
+            for(auto adj: node->neighbors) m[node] -> neighbors.push_back(cloneGraph(adj)); 
+        }    
+        return m[node];      
+    }
+};
+
+
+///BFS
+class Solution {
+public:
+    
+    unordered_map<Node* , Node*> m; //to check whwther we have a copy of node or not
+    
+    Node* cloneGraph(Node* node) {
+        if(node == NULL)  return NULL;
+        
+        Node* first = new Node(node->val); // make a copy of first node
+        m[node] = first;
+        
+        queue<Node*> q; //queue for BFS
+        q.push(node); 
+        
+        Node* curr;
+        
+        while(!q.empty()){
+            curr = q.front();
+            q.pop(); 
+            
+            for(auto neighbor : curr->neighbors){
+                if(m.find(neighbor) == m.end()){ // if not present in map
+                    m[neighbor] = new Node(neighbor->val); // create a copy
+                    q.push(neighbor); // push nto the queue
+                }
+                m[curr]->neighbors.push_back(m[neighbor]); // in current node push adjcant copied node
+            }
+        }
+        return m[node];
+    }
+};
