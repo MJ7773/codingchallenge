@@ -98,6 +98,12 @@ public:
 
 
 //Dynamic Programming
+/*DP Flags
+0 : 00 None
+1 : 01 Pacific
+2 : 10 Atlantic
+3 : 11 Both
+*/
 class Solution {
 public:
     vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
