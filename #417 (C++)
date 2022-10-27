@@ -1,0 +1,145 @@
+//DFS, S=T=O(mn)
+class Solution {
+public:
+    void dfs(vector<vector<int>>& matrix, vector<vector<bool>>& v, int i, int j, int h){
+        if(i<0 || j<0 || i==matrix.size() || j==matrix[0].size()) return;
+        if(v[i][j] || matrix[i][j]<h) return;
+        v[i][j] = true;
+    
+        dfs(matrix, v, i-1, j, matrix[i][j]);
+        dfs(matrix, v, i+1, j, matrix[i][j]);
+        dfs(matrix, v, i, j-1, matrix[i][j]);
+        dfs(matrix, v, i, j+1, matrix[i][j]);
+    }
+    
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        
+        if(heights.empty()) return {};
+        
+        int m = heights.size();
+        int n = heights[0].size();
+        
+        vector<vector<bool>> vPacific(m, vector<bool>(n)), vAtlantic(m, vector<bool>(n));
+        
+        for(int i=0; i<m; ++i){
+            dfs(heights, vPacific, i, 0, 0); //left
+            dfs(heights, vAtlantic, i, n-1, 0); //right
+        }    
+        for(int j=0; j<n; ++j){
+            dfs(heights, vPacific, 0, j, 0); //left
+            dfs(heights, vAtlantic, m-1, j, 0); //right
+        }
+        
+        vector<vector<int>> res;
+        for(int i=0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                if(vPacific[i][j]&&vAtlantic[i][j])res.push_back(vector<int>{i,j});
+            }
+        }
+        return res;    
+    } 
+};
+
+
+///BFS S=T=O(mn)
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        if (heights.empty()) return {};
+        
+        const int m = heights.size();
+        const int n = heights[0].size();  
+        const vector<int> dirs{0, 1, 0, -1, 0};
+        
+        auto bfs = [&](queue<pair<int, int>>& q, vector<vector<int>>& v) {
+            while (!q.empty()) {
+                const int x = q.front().first;
+                const int y = q.front().second;     
+                q.pop();
+                
+                const int h = heights[x][y];
+                v[x][y] = true;
+                for (int i=0; i<4; ++i) {
+                    int tx = x + dirs[i+1];
+                    int ty = y + dirs[i];
+                    if (tx<0 || ty<0 || tx==m || ty==n || heights[tx][ty]<h) continue;
+                    if (v[tx][ty]) continue;
+                    q.push({tx, ty});
+                }
+            }
+        };
+        
+        queue<pair<int, int>> qPacific;
+        queue<pair<int, int>> qAtlantic;
+        vector<vector<int>> vPacific(m, vector<int>(n));
+        vector<vector<int>> vAtlantic(m, vector<int>(n));    
+    
+        for (int y=0; y<n; ++y) {
+            qPacific.push({0, y}); // top
+            qAtlantic.push({m-1, y}); // bottom   
+        }
+        
+        for (int x=0; x<m; ++x) {
+            qPacific.push({x, 0}); // left
+            qAtlantic.push({x, n-1}); // right      
+        }
+        
+        bfs(qPacific, vPacific);
+        bfs(qAtlantic, vAtlantic);    
+        
+        vector<vector<int>> res;
+        
+        for (int i=0; i<m; ++i)
+            for (int j =0; j<n; ++j)
+                if (vPacific[i][j] && vAtlantic[i][j]) res.push_back(vector<int>{i,j});
+        return res;
+    } 
+};
+
+
+//Dynamic Programming
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        if (heights.empty()) return {};
+        const int m = heights.size();
+        const int n = heights[0].size();
+        
+        vector<vector<int>> dp(m, vector<int>(n));
+        
+        for (int i=0; i<m; ++i) {
+            dp[i][0] |= 1; //left
+            dp[i][n-1] |= 2;    //right
+        } 
+        for (int j = 0; j < n; ++j) {
+            dp[0][j] |= 1; //top
+            dp[m-1][j] |= 2;    //bottom  
+        }
+        
+        const vector<int> dirs{0, -1, 0, 1, 0};
+        
+        while (true) {
+            bool changed = false;
+            for (int i=0; i<m; ++i)
+                for (int j=0; j<n; ++j)
+                    for (int d=0; d<4; ++d) {
+                        const int ti = i + dirs[d];
+                        const int tj = j + dirs[d+1];
+                        if (ti<0 || tj<0 || ti==m || tj==n || heights[i][j]<heights[ti][tj]
+                || (dp[i][j]|dp[ti][tj])==dp[i][j]) continue;
+                        dp[i][j] |= dp[ti][tj];
+                        changed = true;
+                    }
+            if (!changed) break;      
+        }   
+        
+        vector<vector<int>> res;
+        for (int i=0; i<m; ++i)
+            for (int j=0; j<n; ++j)
+                if (dp[i][j] == 3) res.push_back(vector<int>{i, j});
+        
+        return res;
+    } 
+};
+
+//memoization needed to prevent repeation
