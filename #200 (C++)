@@ -1,0 +1,76 @@
+// DFS, T=S=O(mn) 
+class Solution {
+public:
+    
+    void dfs(vector<vector<char>>& grid, int r, int c){
+            if(r<0 || r>=grid.size() || c<0 || c>=grid[0].size() || grid[r][c]=='0') return ;
+            grid[r][c] = '0';
+            
+            dfs(grid, r-1, c); //upper
+            dfs(grid, r+1, c); //lower
+            dfs(grid, r, c-1); //left
+            dfs(grid, r, c+1); //right          
+    }
+    
+    int numIslands(vector<vector<char>>& grid) {
+        int m=grid.size(), n=grid[0].size();
+        int numIsland=0;
+         
+        for(int i=0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                if(grid[i][j]=='1') {
+                    numIsland++;
+                    dfs(grid, i,j);                  
+                    }
+                }
+        }
+        return numIsland;
+    }
+};
+
+// BFS, T=O(mn) / S=min(m,n)
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int m=grid.size(), n=grid[0].size();
+        int numIsland=0;
+        
+        queue<pair<int,int>> q;
+        int r,c;
+        
+        for(int i=0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                
+                if(grid[i][j]=='1'){
+                    numIsland++;
+                    grid[i][j] = '0'; //mark visited node
+                    q.push({i,j});
+                    
+                    while(!q.empty()){
+                        r = q.front().first;
+                        c = q.front().second;
+                        q.pop();
+                        
+                        if(r-1>=0 && grid[r-1][c]=='1'){ //upper
+                            q.push({r-1,c});
+                            grid[r-1][c]='0';
+                        }                  
+                        if(r+1<m && grid[r+1][c]=='1'){ //below
+                            q.push({r+1,c});
+                            grid[r+1][c]='0';
+                        }                  
+                        if(c-1>=0 && grid[r][c-1]=='1'){ //left 
+                            q.push({r,c-1});
+                            grid[r][c-1]='0';
+                        }                   
+                        if(c+1<n && grid[r][c+1]=='1'){ //right
+                            q.push({r,c+1});
+                            grid[r][c+1]='0';
+                        }         
+                    }
+                } 
+            }
+        } 
+        return numIsland;
+    }
+};
