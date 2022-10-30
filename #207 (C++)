@@ -1,0 +1,71 @@
+//BFS - topological sort
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> graph(numCourses);
+        vector<int> indegree(numCourses);
+        
+        for(vector v : prerequisites){ //Bulid a graph in a form of adjacency list
+            graph[v[1]].push_back(v[0]);
+            indegree[v[0]]++; //count indegree
+        }
+        
+        queue<int> q;
+        
+        for(int i=0; i<numCourses; ++i){
+            if(indegree[i]==0) q.push(i);
+        }
+        
+        while (!q.empty()) {
+            int curr = q.front(); 
+            q.pop(); 
+            numCourses--;
+            for (auto next: graph[curr]){
+                if (--indegree[next] == 0) q.push(next);
+            }        
+        }
+        return numCourses==0;
+    }
+};
+// T = O(n+e)
+
+//DFS
+class Solution {
+public:
+    unordered_map<int, vector<int>> G;
+    bool hasCircle = false;
+    
+    void dfs(vector<bool> &visited, vector<bool> &onPath, int c){
+        visited[c] = true;   
+        onPath[c] = true;
+        
+        for(int pre : G[c]){
+            if(hasCircle) return ;
+            else if(!visited[pre]) dfs(visited, onPath, pre);
+            else if(onPath[pre]) hasCircle = true;
+        }
+        onPath[c] = false;
+    }
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<bool> visited(numCourses), onPath(numCourses);
+        
+        for(auto req : prerequisites){ //Organize a graph
+            int target = req[0];
+            int pre = req[1];
+            
+            G[target].push_back(pre);  
+        }
+           
+        for (int i=0; i<numCourses; ++i){ // traverse the Graph
+            if (!visited[i]) dfs(visited, onPath, i);
+        }
+        
+        if(hasCircle) return false;
+            
+        for(int i=0; i<numCourses; ++i){
+            if(!visited[i]) return false;
+        }
+        return true; 
+    }
+}; 
