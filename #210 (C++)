@@ -1,0 +1,72 @@
+//BFS, T = O(n+e)
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        
+        vector<int> indegree(numCourses,0);
+        vector<vector<int>> graph(numCourses);
+        vector<int> order;
+        
+        for(vector<int> p : prerequisites){
+            graph[p[1]].push_back(p[0]);
+            indegree[p[0]]++;
+        }
+        
+        queue<int> course;
+        for(int i=0; i<numCourses; ++i){
+            if(indegree[i]==0) course.push(i);
+        }
+        
+        int c;
+        while(!course.empty()){
+            c = course.front();
+            course.pop();
+            order.push_back(c);
+            numCourses--;
+            
+            for(auto next : graph[c]){
+                if(--indegree[next]==0) course.push(next);
+            }
+        }
+        if(numCourses!=0) return {};
+        return order;
+    }
+};
+
+//DFS
+class Solution {
+public:
+    vector<int> ans;
+    bool circle=false;
+    
+    void dfs(vector<vector<int>>& g, vector<bool>& visited, vector<bool>& onPath, int i){
+        visited[i] = true;
+        onPath[i] = true;
+        
+        for(int pre : g[i]){
+            if(circle) return ;
+            else if(!visited[pre]) dfs(g, visited, onPath, pre);
+            else if(onPath[pre]) circle=true;
+        }
+        onPath[i] = false;
+        ans.push_back(i);
+    }
+    
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> graph(numCourses);
+        
+        for(vector<int> p : prerequisites){
+            graph[p[0]].push_back(p[1]);
+        }
+        
+        vector<bool> visited(numCourses);
+        vector<bool> onPath(numCourses);
+        
+        for(int i=0; i<numCourses; ++i){
+            if(!visited[i]) dfs(graph, visited, onPath, i);
+        }
+        if(circle) return {};
+        return ans;
+    }
+};
+
