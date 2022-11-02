@@ -1,0 +1,78 @@
+//BFS,// T = S = O(N)
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if(n==0) return {};
+        if(n==1) return {0};
+        vector<int> roots;
+        vector<vector<int>> adj(n);
+        vector<int> indegrees(n);
+        
+        for(vector<int> e : edges){ //make adjacency list and count its indegree
+            adj[e[0]].push_back(e[1]);
+            indegrees[e[0]]++;
+            adj[e[1]].push_back(e[0]);
+            indegrees[e[1]]++;
+        }
+        
+        queue<int> q;
+        for(int i=0; i<n; ++i){
+            if(indegrees[i]==1) q.push(i); //push all leaves
+        }
+        
+        int node;
+        int size;
+        while(!q.empty()){        
+            roots.clear();        
+            size = q.size();
+            
+            for(int i=0; i<size; ++i){
+                node = q.front();
+                q.pop();         
+                roots.push_back(node);
+                
+                for(auto neighbor : adj[node]){
+                    indegrees[neighbor]--;
+                    if(indegrees[neighbor]==1) q.push(neighbor);
+                }
+            }        
+        }     
+        return roots;
+    }
+}; 
+
+//DFS
+class Solution {
+public:
+    
+    vector<vector<int>> graph;
+    vector<bool> visited;
+    vector<int> nodes;
+    
+    vector<int> dfs(int i){
+        vector<int> longest, path;
+        visited[i] = true;
+        
+        for(auto neighbor : graph[i]){
+            if(!visited[neighbor]){
+                if(size(path = dfs(neighbor)) > size(longest)) longest = move(path);
+            }
+        }
+        visited[i] = false;
+        longest.push_back(i);
+        return longest;
+    }
+    
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        graph.resize(n);
+        visited.resize(n);
+        
+        for(vector<int> e : edges){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        auto path = dfs(dfs(0)[0]);
+        if(size(path)&1) return {path[size(path) / 2]};
+        return {path[size(path) / 2], path[size(path) / 2 -1]};
+    }
+};
