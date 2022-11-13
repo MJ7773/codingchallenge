@@ -1,0 +1,36 @@
+//backtracking
+class Solution {
+public:
+    int row=0, col=0;
+    
+    bool dfs(vector<vector<char>>& board, string word, int i, int j, int n){
+        if(word.size() == n) return true;
+        
+        if(i<0 || i>=row) return false;
+        if(j<0 || j>=col) return false;
+        if(board[i][j] != word[n]) return false;
+        
+        board[i][j] = '0'; //mark as visited
+        
+        bool found = dfs(board, word, i+1, j, n+1) || 
+            dfs(board, word, i-1, j, n+1) || 
+            dfs(board, word, i, j+1, n+1) || 
+            dfs(board, word, i, j-1, n+1);
+        
+        board[i][j] = word[n]; //revoke for other searches
+        
+        return found;
+    }
+    
+    bool exist(vector<vector<char>>& board, string word) {    
+        row = board.size();
+        col = board[0].size();
+        
+        for(int i=0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                if(board[i][j]==word[0] && dfs(board, word, i, j, 0) ) return true;
+            }
+        }
+        return false;
+    }
+};
