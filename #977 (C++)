@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int len=nums.size();
+        vector<int> res(len);
+        int s=0, e=len-1, idx=len-1;
+        
+        while(len--){
+            if(abs(nums[s])>=abs(nums[e])) res[idx--] = nums[s]*nums[s++];
+            else res[idx--] = nums[e]*nums[e--];
+        }
+        return res;
+    }
+};
+
+T=O(n)
