@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        return clean(s) == clean(t);
+    }
+    
+    string clean(string str){
+        int len=0;
+        for(int i=0; i<str.size(); ++i){
+            if(str[i] == '#') len=max(0, --len);
+            else str[len++] = str[i];
+        }
+        return str.substr(0,len);
+    }
+};
