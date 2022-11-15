@@ -1,0 +1,29 @@
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        auto ite = upper_bound(letters.begin(), letters.end(), target);
+        return ite != letters.end() ? *ite : letters[0];
+    }
+};
+// T=O(logN)
+
+//Approach for non-sorted input letters
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        char ans;
+        bool found=false;
+        
+        for(char c : letters){
+            if(c > target && !found){
+                found=true;
+                ans = c;
+            } 
+            else if(c < ans) ans = c;
+        } 
+        
+        if(!found) return letters[0];
+        return ans;
+    }
+};
+//T=O(n)
