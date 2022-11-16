@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int majority, cnt=0;
+        
+        for(auto n : nums){
+            if(cnt) cnt += (n==majority ? 1 : -1);
+            else{
+                majority = n;
+                cnt += 1;
+            }
+        }
+        return majority;
+    }
+};
+// T=O(N) S=O(1)
+
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int,int> freq;
+        
+        for(auto n : nums) freq[n]++;
+        
+        for(auto n : freq){
+            if(n.second > floor(nums.size()/2)) return n.first;
+        }
+        
+        return -1;
+        
+    }
+};
