@@ -1,0 +1,33 @@
+// back-tracking approach
+class Solution {
+public:
+    vector<string> ans;
+    
+    void dfs(string curr, string s, int idx){
+        if(idx==s.size()){
+            ans.push_back(curr);
+            return ;
+        }
+        if(isdigit(s[idx])){
+            curr.push_back(s[idx]);
+            dfs(curr, s, idx+1);
+        }
+        else{
+            string c1 = curr;
+            c1.push_back(tolower(s[idx]));
+            dfs(c1, s, idx+1);
+            
+            string c2 = curr;
+            c2.push_back(toupper(s[idx]));
+            dfs(c2, s, idx+1);
+        }
+        
+    }
+    
+    vector<string> letterCasePermutation(string s) {
+        dfs("", s, 0);
+        return ans;  
+    }
+};
+//T=O(2^n) at each level nodes are increasing by power of 2
+//S=O(n) [Maximum depth of recursion tree]
