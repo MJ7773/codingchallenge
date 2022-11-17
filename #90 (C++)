@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;       
+        vector<int> sub;         
+        sort(nums.begin(),nums.end());      
+        helper(nums, ans, sub, 0);  
+        return ans;  
+    }
+    
+    void helper(vector<int>& nums, vector<vector<int>>& ans, vector<int>& sub, int idx){
+        ans.push_back(sub);       
+        for(int i=idx; i<nums.size(); i++){     //check for all possibilites
+            if(i>idx && nums[i]==nums[i-1]) continue;      //if duplicate then continue
+            sub.push_back(nums[i]);
+            helper(nums, ans, sub, i+1); 
+            sub.pop_back();         //to get subset without nums[i]
+        }
+    }  
+};
