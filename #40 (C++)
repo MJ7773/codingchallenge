@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end()); //O(nlogn)
+        vector<int> sub;
+        comb(candidates, candidates.size(), target, 0, sub);
+        return res;
+    }
+    
+private:
+    void comb(vector<int>& cand, int len, int target, int idx, vector<int>& sub){
+        if(target == 0){
+            res.push_back(sub);
+            return ;
+        }
+        else if(target<0 || idx==len) return ;
+        
+        for(int i=idx; i<len; ++i){
+            if(cand[i] > target) return ;
+            else if(idx<i && cand[i]==cand[i-1]) continue;
+            else if(cand[i] == target){
+                
+            }
+            sub.push_back(cand[i]);
+            comb(cand, len, target-cand[i], i+1, sub);
+            sub.pop_back();
+        }
+    }
+};
