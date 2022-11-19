@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        //sort(candidates.begin(), candidates.end()); // O(nlogn)
+        vector<int> sub;
+        combsum(candidates, target, 0, sub, target, candidates.size());
+        return res;
+    }
+    
+private:
+    void combsum(vector<int> cand, int target, int idx, vector<int>& sub, int need, int len){
+        if(need<0) return ;
+        else if(need==0){
+            res.push_back(sub);
+            return ;
+        }
+        else if(idx==len) return ;
+        
+        combsum(cand, target, idx+1, sub, need, len);
+        
+        sub.push_back(cand[idx]);
+        need -= cand[idx];
+        combsum(cand, target, idx, sub, need, len);
+        sub.pop_back();
+    }
+    
+    
+};
+
+
+class Solution {
+public:
+    vector<vector<int>> res;
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end()); // O(nlogn)
+        vector<int> sub;
+        combsum(candidates, target, 0, sub, target, candidates.size());
+        return res;
+    }
+    
+private:
+    void combsum(vector<int> cand, int target, int idx, vector<int>& sub, int need, int len){
+        if(need<0) return ;
+        else if(need==0){
+            res.push_back(sub);
+            return ;
+        }
+        
+        while(idx<len && cand[idx] <= need){
+            sub.push_back(cand[idx]);
+            need -= cand[idx];
+            combsum(cand, target, idx, sub, need, len);
+            sub.pop_back();
+            need += cand[idx];
+            ++idx;
+        }
+    }
+    
+    
+};
