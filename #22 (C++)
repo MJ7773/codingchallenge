@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<string> res;
+    
+    vector<string> generateParenthesis(int n) {     
+        comb("", n, 0);
+        return res;
+    }
+
+private:
+    void comb(string str, int open, int close){
+        if(open==0 && close==0) {
+            res.push_back(str);
+            return;
+        }
+        if(close > 0) comb(str+")", open, close-1); 
+        if(open > 0) comb(str+"(", open-1, close+1); 
+    }
+};
