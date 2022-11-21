@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        return sum<target || (sum+target)&1 ? 0 : subsum(nums, (target+sum)>>1);
+     
+    }
+    
+private: 
+    int subsum(vector<int>& nums, int target){
+        target = abs(target);
+        int cases[target+1];
+        cases[0] = 1;
+        
+        for(int i=1; i<=target; ++i) cases[i]=0;
+        
+        for(int n: nums){
+            for(int i=target; i>=n; --i){
+                cases[i] += cases[i-n];
+            }
+        }
+        return cases[target];
+    }
+};
