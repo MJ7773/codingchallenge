@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<string>> res;
+    
+    vector<vector<string>> partition(string s) {
+        vector<string> sub;
+        findres(s, s.size(), 0, sub);
+        return res;
+    }
+    
+private: 
+    void findres(string s, int len, int idx, vector<string>& sub){
+        if(idx==len) {
+            res.push_back(sub);
+            return;
+        }
+        
+        for(int i=idx; i<len; ++i){
+            if(ispalindrome(s, idx, i)){
+                sub.push_back(s.substr(idx,i-idx+1)); //return [start, end)
+                findres(s, len, i+1, sub);
+                sub.pop_back();
+            }
+        }
+    }
+    bool ispalindrome(string s, int start, int end){
+        while(start<end){
+            if(s[start++] != s[end--]) return false;
+        }
+        return true;
+    }
+};
