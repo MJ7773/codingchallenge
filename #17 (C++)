@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<string> res;
+    
+    vector<string> letterCombinations(string digits) {
+        if(digits=="") return {};
+        vector<string> letters;
+        string sub="";
+        
+        convert(digits, digits.size(), letters);
+        comb(letters, letters.size(), 0, sub);
+        return res;
+    }
+    
+private:
+    void convert(string& digits, int len, vector<string>& letters){
+        string match[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        for(int i=0; i<len; ++i){
+            letters.push_back(match[digits[i]-'0'-2]);
+        }
+    }
+    
+    void comb(vector<string>& letters, int len, int idx_l, string& sub){
+        if(idx_l==len){
+            res.push_back(sub);
+            return ;
+        }
+        
+        for(int i=0; i<letters[idx_l].size(); ++i){
+            sub.push_back(letters[idx_l][i]);
+            comb(letters, len, idx_l+1, sub);
+            sub.pop_back();
+        }
+    }
+};
