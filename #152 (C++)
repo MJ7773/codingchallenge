@@ -1,0 +1,17 @@
+https://leetcode.com/problems/maximum-product-subarray/
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int pmax=nums[0], localmax=nums[0], localmin=nums[0];
+        for(int i=1; i<nums.size(); ++i){
+            if(nums[i]<0) swap(localmax, localmin);
+            localmax = max(localmax*nums[i], nums[i]);
+            localmin = min(localmin*nums[i], nums[i]);
+            pmax = max(pmax, localmax);
+        }
+        return pmax;
+    }
+};
+
+T=O(n) S=O(1)
