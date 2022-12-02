@@ -1,0 +1,39 @@
+https://leetcode.com/problems/partition-to-k-equal-sum-subsets/submissions/
+
+//DP + Bitmask
+//Should traverse for all the possible subsets
+class Solution { 
+public:
+    bool canPartitionKSubsets(vector<int>& nums, int k) {    
+        int len=nums.size(), sum=0;
+        for(int n : nums) sum+=n;
+        if(sum%k != 0) return false; 
+        sum /= k;
+        sort(nums.begin(), nums.end());
+        if(nums[len-1] > sum) return false;
+           
+        //selection of elements by the binary status
+        vector<bool> dp(1<<len); //indicates validity of dp[i] th subset - means the subsum <= target
+        vector<int> subsum(1<<len, 0); //stores the sum of subset 
+        dp[0] = true;
+
+        for(int i=0; i<(1<<len); ++i){
+            if(dp[i]){
+                cout<<i<<endl;
+                for(int j=0; j<len; ++j){ // Loop over each element to find subset
+                    int temp = i | (1<<j); // Set the j th bit into i
+                    if(temp != i){ // If new bit(element) is set
+                        if(nums[j] <= sum-(subsum[i]%sum)){
+                            dp[temp] = true;
+                            subsum[temp] = nums[j] + subsum[i];
+                        }
+                        else break; //Because nums is already sorted
+                    }
+                }
+            }
+        }
+        return dp[(1<<len) - 1];
+    }
+};
+
+
