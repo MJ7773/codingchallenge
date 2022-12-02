@@ -1,0 +1,40 @@
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+
+//dp, T=O(n), S=O(1)
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int sell=0, buy=INT_MIN, rest=0;
+        
+        for(int i=0; i<prices.size(); ++i){
+            int prevSold = sell;
+            sell = buy + prices[i];
+            buy = max(buy, rest-prices[i]); //buy is only available after at least one round of rest
+            rest = max(rest, prevSold);
+        }
+        return max(sell, rest);
+    }
+};
+
+//dp, T=O(n), S=O(n)
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int maxprofit=0;
+        
+        vector<int> s0(prices.size(), 0); //status0 = max(stay, rest from s2)
+        vector<int> s1(prices.size(), 0); //status1 = max(stay, buy from s0)
+        vector<int> s2(prices.size(), 0); //status2 = max(sell from s1)
+        
+        s0[0] = 0;
+        s1[0] -= prices[0];
+        s2[0] = INT_MIN;
+        
+        for(int i=1; i<prices.size(); ++i){
+            s0[i] = max(s0[i-1], s2[i-1]);
+            s1[i] = max(s1[i-1], s0[i-1]-prices[i]);
+            s2[i] = s1[i-1] + prices[i];
+        }
+        return max(s0[prices.size()-1], s2[prices.size()-1]);
+    }
+};
