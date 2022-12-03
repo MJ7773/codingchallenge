@@ -1,0 +1,49 @@
+https://leetcode.com/problems/linked-list-cycle-ii/
+
+//Assume 
+//the distance from head to the start of the loop = x1
+//the distance from the start of the loop to the point fast and slow meet = x2
+//the distance from the point fast and slow meet to the start of the loop = x3
+//Then,
+//the distance fast moved = x1 + x2 + x3 + x2
+//the distance slow moved = x1 + x2
+//As fast pointer runs twice the speed of slow pointer, when they meet
+//the distance travelled by fast pointer = 2*(distance travelled by slow pointer)
+//Means x1 + x2 + x3 + x2 = 2*(x1 + x2)
+//Means x3 = x1
+// => the distance from the point fast and slow meet to the start of the loop = the distance from head to the start of the loop
+// = After meet the slower pointer and faster pointer,
+// We're goint to place the slower pointer to the starting node & moving both slower and faster point to 1 step at a time together.
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(!head) return NULL;
+        
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast){
+                slow = head;
+                while(slow != fast){
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return slow;
+            }
+        }
+        return NULL;
+    }
+};
