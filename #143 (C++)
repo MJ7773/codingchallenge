@@ -1,0 +1,52 @@
+https://leetcode.com/problems/reorder-list/submissions/855645407/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* temp = NULL;
+            
+        while(fast!=NULL && fast->next!=NULL){ //find the mid&end point
+            temp = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if(temp==NULL) return ;
+        temp->next = NULL; //the end of the left half list
+        fast = NULL;
+        
+        //reverse the end half list
+        while(slow!=NULL){ 
+            temp = slow->next;
+            slow->next = fast;
+            fast = slow; //fast = head of the reversed half
+            slow = temp;
+        }
+        slow = head->next;
+        temp = head;
+        temp->next = fast;
+        fast = fast->next;
+        
+        temp = temp->next;
+        while(slow!=NULL && fast!=NULL){
+            temp->next = slow;
+            temp = temp->next;
+            slow = slow->next;
+
+            temp->next = fast;
+            temp = temp->next;
+            fast = fast->next;
+        }
+    }
+};
