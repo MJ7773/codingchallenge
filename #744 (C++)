@@ -1,7 +1,26 @@
 class Solution {
 public:
     char nextGreatestLetter(vector<char>& letters, char target) {
-        auto ite = upper_bound(letters.begin(), letters.end(), target);
+        int s=0, e=letters.size()-1;
+        int found = -1;
+        while(s<=e){
+            int mid = (s+e)/2;
+            if(letters[mid]>target){
+                e = mid-1;
+                found = mid;
+            } 
+            else s = mid+1;
+        }
+        if(found==-1) return letters[0];
+        return letters[found];
+    }
+};
+// T=O(logN)
+
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        auto ite = upper_bound(letters.begin(), letters.end(), target); //log(N)
         return ite != letters.end() ? *ite : letters[0];
     }
 };
