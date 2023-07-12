@@ -1,6 +1,5 @@
 ## https://www.codingninjas.com/studio/problem-details/beautiful-string_1115625#:~:text=A%20binary%20string%20is%20called,%271%27%20or%20vice%20versa.
 
-
 def makeBeautiful(str):
     # Write your code here
     
