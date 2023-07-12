@@ -1,0 +1,37 @@
+##  https://leetcode.com/problems/majority-element/description/
+#sort() : O(nlogn)
+
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        majority = None
+        cnt = 0
+
+        for n in nums :
+            if cnt :
+                if n == majority :
+                    cnt += 1
+                else :
+                    cnt -= 1
+            else :
+                majority = n
+                cnt = 1
+        
+        return majority
+## T=O(N)
+
+-------------------------
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        freq = {}
+
+        for n in nums :
+            if n in freq :
+                freq[n] += 1
+            else :
+                freq[n] = 1
+
+        for n, cnt in freq.items() :
+            if cnt > floor(len(nums)/2) :
+                return n
+## T=O(N)
