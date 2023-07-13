@@ -24,7 +24,8 @@ for _ in range(Q):
     l, h = A, B
     while l <= h :
         mid = (l+h) // 2     
-        if primes[mid] - primes[A-1] >= K: h = mid-1
+        if primes[mid] - primes[A-1] >= K: 
+            h = mid-1
         else: l = mid+1 
      
     if l <= B: print(l)
