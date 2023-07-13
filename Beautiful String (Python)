@@ -15,6 +15,3 @@ def makeBeautiful(str):
             else : init1 += 1
 
     return min(init0, init1)
-        
-
-    
