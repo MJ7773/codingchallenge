@@ -1,3 +1,5 @@
+## https://www.codingninjas.com/studio/problems/yogesh-and-primes_16331?leftPanelTab=0
+
 from os import *
 from sys import *
 from collections import *
