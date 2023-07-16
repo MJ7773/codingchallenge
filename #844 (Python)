@@ -1,0 +1,21 @@
+## https://leetcode.com/problems/backspace-string-compare/description/
+
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        
+        def clean(string:str) -> bool:
+            cleaned=""
+            l = 0
+
+            for i in range(0, len(string)):
+                if string[i]=='#':
+                    l=l-1
+                    l = max(0, l)
+                    cleaned = cleaned[0:l]
+                else :
+                    cleaned = cleaned[0:l]+string[i]
+                    l += 1
+
+            return cleaned
+        
+        return clean(s)==clean(t)
