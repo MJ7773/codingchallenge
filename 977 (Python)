@@ -1,0 +1,19 @@
+## https://leetcode.com/problems/squares-of-a-sorted-array/description/
+
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        sqrd = [0 for i in range(len(nums))]
+
+        l = len(nums)
+        s = 0
+        e = l-1
+
+        for i in range(len(nums)-1, -1, -1) :
+            if abs(nums[s]) >= abs(nums[e]) :
+                sqrd[i] = nums[s]**2
+                s += 1
+            else :
+                sqrd[i] = nums[e]**2
+                e -= 1
+
+        return sqrd
