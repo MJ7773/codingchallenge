@@ -1,0 +1,53 @@
+##https://leetcode.com/problems/product-of-array-except-self/description/
+# T=O(N)
+#Approach: ans[i] = nums[0]~nums[i-1] * nums[i+1]~nums[len]
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        
+        ans = [1 for i in range(len(nums))]
+        ans[0] = nums[0]
+
+        for i in range(1,len(nums)):
+            ans[i] = nums[i] * ans[i-1]
+        
+        ans[len(nums)-1] = ans[len(nums)-2]
+        p = nums[len(nums)-1]
+
+        for i in range(len(nums)-2, 0, -1):
+            ans[i] = p * ans[i-1]
+            p = p * nums[i]
+
+        ans[0] = p
+
+        return ans
+
+
+#Approach: If #.zero==2 then all the product is 0, if #.zero==1 then all the produce is 0 except the index of 0
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        
+        answer = [0 for i in range(len(nums))]
+        p = 1
+        zero1 = False #when the number of zero=1
+        zero2 = False #when the number of zero=2
+        
+        for n in nums :
+            if n==0:
+                if zero1:
+                    zero2 = True
+                zero1 = True
+            else:
+                p *= n
+        
+        for i in range(0, len(nums)):
+            if nums[i]==0:
+                if zero2:
+                    continue
+                else:
+                    answer[i] = p
+            elif zero1:
+                continue
+            else:
+                answer[i] = p//nums[i]
+
+        return answer
