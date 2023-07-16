@@ -1,0 +1,14 @@
+## https://leetcode.com/problems/two-sum/submissions/
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        hash = {}
+
+        for i in range(0, len(nums)) :
+            if target-nums[i] in hash : #O(1)
+                return [hash[target-nums[i]], i]
+            else :
+                hash[nums[i]] = i
+
+
+## T=O(N)
