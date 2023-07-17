@@ -1,3 +1,8 @@
+## https://leetcode.com/problems/set-matrix-zeroes/description/
+# Approach : mark matrix[0][j]=0 and matrix[i][0]=0 when matrix[i][j]==0(when i>0 && j>0)
+#            and replace those row and column marked as 0 (only for i>0 && j>0, because we refer the marked 0, not originally 0)
+#            so that prevent the whole matrix is replaced as zero.
+
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {        
