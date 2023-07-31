@@ -1,7 +1,7 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        unordered_set<int> s(begin(nums), end(nums)); //unordered_set : Worst.O(n) agv.O(1)
+        unordered_set<int> s(begin(nums), end(nums)); //unordered_set : Worst.O(n) agv.O(1) //Convert the Vector to unordered_set
         int longest = 0;
         for(auto& num : s){
             if(s.count(num - 1)) continue; //if there's no (num-1) in the set = the current num is the smallest in a consecutive numbers
