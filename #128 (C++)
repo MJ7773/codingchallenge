@@ -1,6 +1,7 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
+        //Convert the Vector to unordered_set
         unordered_set<int> s(begin(nums), end(nums)); //unordered_set : Worst.O(n) agv.O(1) //Convert the Vector to unordered_set
         int longest = 0;
         for(auto& num : s){
