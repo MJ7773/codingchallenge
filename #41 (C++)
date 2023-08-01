@@ -1,3 +1,31 @@
+//https://leetcode.com/problems/first-missing-positive/description/
+
+// T=O(N), S=O(1)
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        for(int i=0; i<nums.size(); ++i){
+            if(nums[i]<0) nums[i] = 0;
+        }
+
+        for(int i=0; i<nums.size(); ++i){
+            int n = abs(nums[i]);
+            if(n>=1 && n<=nums.size()){
+                if(nums[n-1]>0) nums[n-1] *= -1;
+                else if(nums[n-1]==0) nums[n-1] = -1 * (nums.size()+1);
+            }
+        }
+
+        for(int i=0; i<nums.size(); ++i){
+            if(nums[i]>=0) return i+1;
+        }
+
+        return nums.size() + 1;
+    }
+};          //Solution set = [1 .. nums.size()+1]
+
+------------------------------------------------------------------------------------
+
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
@@ -7,6 +35,9 @@ public:
             while(nums[i]>0 && nums[i]<=len && nums[nums[i]-1]!=nums[i])
                 swap(nums[i], nums[nums[i]-1]);        
         }
+    //a value of nums[i] should be placed in position nums[i]-1, 
+    //using while instead of if in case of the latter are exchanged to 
+    //the traversed positions;
         
         for(int i=0; i<len; ++i){
             if(nums[i] != i+1) return i+1;
@@ -16,4 +47,4 @@ public:
     }
 };
 
-//// T = O(n)
+//// T=O(n), S=O(1)
