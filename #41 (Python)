@@ -1,0 +1,30 @@
+##https://leetcode.com/problems/first-missing-positive/description/
+
+## T=O(N) , S=O(1)
+
+class Solution(object):
+    def firstMissingPositive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        for i in range(len(nums)) :
+            if nums[i] < 0 : 
+                nums[i] = 0
+        
+        for n in nums:
+            n = abs(n)
+            if 1 <= n <= len(nums):
+                if nums[n-1] == 0:
+                    nums[n-1] = -1 * (len(nums)+1)
+                elif nums[n-1] > 0: 
+                    nums[n-1] *= -1
+        
+        for i in range(len(nums)):
+            if nums[i] >= 0 :
+                return i+1
+        
+        return len(nums)+1
+
+## solution set = [1 .. len(nums)+1]
