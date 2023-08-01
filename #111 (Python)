@@ -1,0 +1,65 @@
+## https://leetcode.com/problems/minimum-depth-of-binary-tree/description/
+
+####BFS / T=O(logN) ########################################
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        q = deque([root])
+        minlen = 1
+
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+                if not node.left and not node.right:
+                    return minlen
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            minlen += 1
+        
+        return minlen
+
+####BFS / T=O(logN) ########################################
+class Solution(object):
+    def minDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+
+        if not root :
+            return 0
+
+        q = deque([root, None])
+        minlen = 1
+
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+                if not node :
+                    minlen += 1
+                    q.append(None)
+                
+                elif not node.left and not node.right:
+                    return minlen
+                
+                elif not node.left:
+                    q.append(node.right)
+                
+                elif not node.right:
+                    q.append(node.left)
+
+                else:
+                    q.append(node.left)
+                    q.append(node.right)
+        
+        return minlen
