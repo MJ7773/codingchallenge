@@ -1,3 +1,6 @@
+//https://leetcode.com/problems/minimum-depth-of-binary-tree/description/
+
+///////////// DFS T=O(logN)
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -23,4 +26,42 @@ public:
     }
 };
 
-///// T = O(logN)
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if (!root) return 0;
+        if (!root->left && !root->right) return 1; //no children on both left and right
+
+        int left = (root->left ? minDepth(root->left) : INT_MAX); //INT_MAX = return max value of int
+        int right = (root->right ? minDepth(root->right) : INT_MAX);
+
+        return 1 + min(left, right);
+    }
+};
+
+
+//////////BFS T=O(logN)
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(!root) return 0;
+
+        queue<TreeNode*> q;
+        q.push(root);
+        int d = 1;
+
+        while(!q.empty()){
+            int len = q.size();
+
+            for(int i=0; i<len; ++i){
+                TreeNode* node = q.front();
+                q.pop();
+                if(!node->left && !node->right) return d;
+                if(node->left) q.push(node->left);
+                if(node->right) q.push(node->right);
+            }
+            ++d;
+        }
+        return d;
+    }
+};
