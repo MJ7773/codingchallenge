@@ -1,28 +1,52 @@
-//DFS
+// https://leetcode.com/problems/clone-graph/description/
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+//DFS T=O(N)
 class Solution {
 public:
-    unordered_map<Node* , Node*> m; // to check whwther we have a copy of node or not 
-    
+    unordered_map<Node*, Node*> m; // to check whwther we have a copy of node or not 
+
     Node* cloneGraph(Node* node) {
-        if(node == NULL)  return NULL;
+        if(!node) return NULL;
         
-        // for a node, we will check whether we already creates a copy of thiis or not. 
-        
-        if(m.find(node) == m.end()){
-            m[node] = new Node(node -> val); // make a copy
-            
-            for(auto adj: node->neighbors) m[node] -> neighbors.push_back(cloneGraph(adj)); 
-        }    
-        return m[node];      
+        // for a node, we will check whether we already creates a copy of thiis or not.  
+        if(m.find(node) == m.end()){ //O(1)
+            m[node] = new Node(node->val);
+            for(auto adj : node->neighbors){
+                m[node]->neighbors.push_back(cloneGraph(adj));
+            }
+        }
+        return m[node];
     }
 };
 
 
-///BFS
+
+///BFS T=O(N)
 class Solution {
 public:
     
-    unordered_map<Node* , Node*> m; //to check whwther we have a copy of node or not
+    unordered_map<Node* , Node*> m; //to check whether we have a copy of node or not
     
     Node* cloneGraph(Node* node) {
         if(node == NULL)  return NULL;
