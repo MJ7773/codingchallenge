@@ -1,0 +1,72 @@
+## https://leetcode.com/problems/clone-graph/description/
+
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+###BFS, O(N)
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if not node:
+            return None
+        
+        q = deque([node])
+        clones = {node:Node(node.val)}
+
+        while q :
+            curr = q.popleft()
+
+            for ngbr in curr.neighbors: #O(1)
+                if ngbr not in clones:
+                    clones[ngbr] = Node(ngbr.val)
+                    q.append(ngbr)
+                clones[curr].neighbors.append(clones[ngbr])
+                
+        return clones[node]
+
+
+### DFS, O(N)
+class Solution(object):
+
+    clones = {}
+
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        if not node:
+            return None
+        
+        if node not in self.clones:
+            self.clones[node] = Node(node.val)
+            for ngbr in node.neighbors:
+                self.clones[node].neighbors.append(self.cloneGraph(ngbr))      
+        
+        return self.clones[node]
+
+
+### DFS, O(N)
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        clones = {}
+
+        def dfs(node):
+            if not node: return None
+
+            if node not in clones:
+                clones[node] = Node(node.val)
+                for nei in node.neighbors:
+                    clones[node].neighbors.append(dfs(nei))
+            
+            return clones[node]
+
+        return dfs(node)  
