@@ -1,0 +1,127 @@
+## https://leetcode.com/problems/pacific-atlantic-water-flow/description/
+
+## BFS T=O(N)
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        m, n = len(heights), len(heights[0])
+        
+        qPO, qAO = deque(), deque()
+        PO, AO = [[False] * n for _ in range(m)], [[False] * n for _ in range(m)]
+
+        for j in range(n) :
+            qPO.append((0,j)) #top
+            qAO.append((m-1, j)) #bottom
+        
+        for i in range(m) :
+            qPO.append((i,0)) #left
+            qAO.append((i,n-1)) #right
+
+        dir = [1, 0, -1, 0, 1]
+        def bfs(q, flow):
+            while q:
+                x,y = q.popleft()
+                h = heights[x][y]
+
+                flow[x][y] = True
+                for i in range(4):
+                    tx = x + dir[i+1]
+                    ty = y + dir[i]
+
+                    if tx<0 or ty<0 or tx>=m or ty>=n: continue
+                    elif flow[tx][ty] or heights[tx][ty]<h: continue
+                    flow[tx][ty] = True
+                    q.append((tx,ty))
+
+        bfs(qPO, PO)
+        bfs(qAO, AO)
+
+        res = []
+        for i in range(m):
+            for j in range(n):
+                if PO[i][j] and AO[i][j]:
+                    res.append((i,j))
+
+        return res
+
+
+
+## DFS O(N)
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        
+        m, n = len(heights), len(heights[0])     
+        PO, AO = [[False] * n for _ in range(m)], [[False] * n for _ in range(m)]
+
+        def dfs(flow, x, y, h):
+            if x<0 or y<0 or x>=m or y>=n: return
+            elif flow[x][y] or heights[x][y]<h: return
+            flow[x][y] = True
+            
+            dfs(flow, x+1, y, heights[x][y])
+            dfs(flow, x, y+1, heights[x][y])
+            dfs(flow, x-1, y, heights[x][y])
+            dfs(flow, x, y-1, heights[x][y])
+
+        for j in range(n) :
+            dfs(PO, 0, j, 0) #top
+            dfs(AO, m-1, j, 0) #bottom
+        
+        for i in range(m) :
+            dfs(PO, i, 0, 0) #left
+            dfs(AO, i, n-1, 0) #right
+
+        res = []
+        for i in range(m):
+            for j in range(n):
+                if PO[i][j] and AO[i][j]:
+                    res.append((i,j))
+
+        return res
+
+
+##DP
+# 0=00 (Nothing)
+# 1=01 (Pacific)
+# 2=10 (Atlantic)
+# 3=11 (both)
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        
+        m, n = len(heights), len(heights[0])
+        dp = [[0] * n for _ in range(m)]
+
+        for j in range(n) :
+            dp[0][j] |= 1 #top
+            dp[m-1][j] |= 2 #bottom
+        
+        for i in range(m) :
+            dp[i][0] |= 1 #left
+            dp[i][n-1] |= 2 #right
+
+        dir = [0, -1, 0, 1, 0]
+        while True:
+            changed = False
+            for i in range(m):
+                for j in range(n):
+                    for d in range(4):
+                        tx = i + dir[d]
+                        ty = j + dir[d+1]
+                         
+                        if tx<0 or ty<0 or tx>=m or ty>=n: continue
+                        elif heights[i][j]<heights[tx][ty]: continue
+                        elif (dp[i][j]|dp[tx][ty]) == dp[i][j]: continue
+                        dp[i][j] |= dp[tx][ty]
+                        changed = True
+            if not changed: break  
+
+        res = []
+        for i in range(m):
+            for j in range(n):
+                if dp[i][j]==3:
+                    res.append((i,j))
+
+        return res
+
+
+
+
