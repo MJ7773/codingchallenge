@@ -1,0 +1,101 @@
+// https://leetcode.com/problems/minimum-window-substring/description/?envType=list&envId=xlem03mm
+
+
+//T=O(N), S=O(t)
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> freq; //need
+        unordered_map<char, int> window; //have
+
+        for(char c : t){        
+            ++freq[c];
+            window[c] = 0;
+        }
+
+        int need = freq.size();
+        int have = 0;
+        
+        int i=0, j=-1;
+        int f,r;
+        int min_len=INT_MAX;
+        bool shrink = false;
+
+        char c;    
+        while(i<s.size()){
+            if(j==s.size()){
+                if(have<need) break;
+                else shrink=true;
+            } 
+            if(!shrink){
+                c = s[++j];
+                if(freq.find(c) != freq.end()){//unordered_map.find()==O(1)
+                    
+                    if(++window[c] == freq[c]){ //a char is found and it same quantity as required
+                        if(++have == need){ //increment have and check if it meets need
+                            if(j-i+1 < min_len){ //check if they've min len
+                                f=i;
+                                r=j;
+                                min_len = j-i+1;
+                                if(min_len == t.size()) break;//t.size() is min len
+                            }
+                            shrink = true;
+                        }
+                    }
+                }
+            }
+            else{//shirnk
+                c = s[i++];
+                if(freq.find(c)!=freq.end())
+                    if(--window[c] < freq[c]) --have;
+
+                if(have<need) shrink = false;
+                else{
+                    if(j-i+1 < min_len){
+                        f=i;
+                        r=j;
+                        min_len = j-i+1;
+                        if(min_len == t.size()) break;//t.size() is min len
+                    }
+                }
+            }
+        }
+        if(min_len == INT_MAX) return "";
+        return s.substr(f, r-f+1);
+    }
+};
+
+
+
+---------------
+//T=O(N), S=O(t)
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> freq; //count chars in t
+
+        for(auto c : t) ++freq[c];
+        
+        int st_idx = 0, j=0;
+        int min_len = INT_MAX;
+        int need = freq.size();
+
+        for(int i=0; i<s.size(); ++i){
+            if(freq.find(s[i]) != freq.end()){
+                --freq[s[i]];
+                if(!freq[s[i]]) --need;
+            }
+            while(!need){
+                if(i-j+1 < min_len) min_len=i-j+1, st_idx=j;
+                if(freq.find(s[j])!=freq.end()){
+                    ++freq[s[j]];
+                    if(freq[s[j]] > 0) ++need;
+                }
+                ++j;
+            }
+        }
+   
+        if(min_len == INT_MAX) return "";
+        return s.substr(st_idx, min_len);
+    }
+};
