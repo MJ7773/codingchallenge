@@ -1,3 +1,29 @@
+//https://leetcode.com/problems/backspace-string-compare/description/?envType=list&envId=xlem03mm
+
+//Two Pointers, T=O(N), S=O(1)
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+       int left = 0;
+       for(int i=0; i<s.size(); ++i){
+           if(s[i]=='#') left = max(0, --left);
+           else s[left++] = s[i];
+       }
+       s = s.substr(0, left);
+
+       left = 0;
+       for(int i=0; i<t.size(); ++i){
+           if(t[i]=='#') left = max(0, --left);
+           else t[left++] = t[i];
+       }
+       t = t.substr(0, left);
+       cout<<s<<endl;
+       cout<<t<<endl;
+       return s==t;
+    }
+};
+
+//Iteration, T=O(N), S=O(1)
 class Solution {
 public:
     bool backspaceCompare(string s, string t) {
