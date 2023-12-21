@@ -1,17 +1,20 @@
 https://leetcode.com/problems/longest-increasing-subsequence/submissions/
 
 //Greedy+Binary Search(lower_bound)
+
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         vector<int> sub;
-        for(int n : nums){
+        for(int n : nums){ //O(n)
             if(sub.empty() || sub[sub.size()-1] < n) sub.push_back(n);
             else{
-                int idx = lower_bound(sub.begin(), sub.end(), n)-sub.begin();
+                int idx = lower_bound(sub.begin(), sub.end(), n)-sub.begin(); //T(lower_bound) = O(n) 
                 sub[idx] = n;
             }
         }
         return sub.size();
     }
 };
+
+T=O(nlogn)
