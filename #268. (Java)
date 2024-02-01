@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/missing-number/description/
+
 class Solution {
     public int missingNumber(int[] nums) {
         int len = nums.length;
@@ -8,3 +10,5 @@ class Solution {
         return (int) (actualSum-sum);
     }
 }
+
+//T=O(N), S=O(1)
