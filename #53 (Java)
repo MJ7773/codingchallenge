@@ -1,0 +1,12 @@
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int local_max=0, global_max=0;
+
+        for(int n:nums){
+            local_max = Math.max(local_max+n, n);
+            global_max = Math.max(global_max, local_max);
+        }
+
+        return global_max;
+    }
+}
