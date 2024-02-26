@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/3sum/description/
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        sums = []
+        size = len(nums)
+        nums.sort() ##O(nlogn)
+
+        for i in range(size): //O(n)
+            if nums[i] > 0:
+                break
+            if i>0 and nums[i]==nums[i-1]: 
+                continue
+            target = -nums[i]
+            j = i+1
+            k = size-1
+            
+            while j<k: //O(n)
+                sum = nums[j]+nums[k]
+                if sum < target: j=j+1
+                elif sum > target: k=k-1
+                else: 
+                    ans = [nums[i], nums[j], nums[k]]
+                    sums.append(ans)
+                    while j<k and nums[j]==ans[1]: j=j+1
+                    while j<k and nums[k]==ans[2]: k=k-1
+
+        return sums
+
+//T=O(n^2)
