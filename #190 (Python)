@@ -1,0 +1,14 @@
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        rev = 0
+        mask = 1
+
+        for _ in range(0,32):
+            rev <<= 1
+            if mask & n : 
+                rev |= 1
+            mask <<= 1
+        
+        return rev
+
+T=O(1)
