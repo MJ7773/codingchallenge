@@ -1,0 +1,19 @@
+## https://leetcode.com/problems/coin-change/description/
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if amount == 0: return 0
+
+        cnt = [amount+1] * (amount+1)
+        cnt[0] = 0
+
+        for i in range(1, amount+1): #O(amount)
+            for j in coins: #O(#coins)
+                c = i-j #change
+                if c >= 0:
+                    cnt[i] = min(cnt[i], cnt[c]+1)
+
+        if cnt[amount] == amount+1 : return -1
+        return cnt[amount]
+
+## T=O(amount * #coins) , S=O(amount)
