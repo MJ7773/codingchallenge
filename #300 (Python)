@@ -1,0 +1,40 @@
+##https://leetcode.com/problems/longest-increasing-subsequence/description/
+
+################## dp
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        max_seq = 1
+        dp = [1] * len(nums)
+
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[j]<nums[i] and dp[i]<dp[j]+1:
+                    dp[i] = dp[j]+1
+                    max_seq = max(max_seq, dp[i])
+
+        return max_seq
+## T=O(n^2)
+
+##################### greedy + binary
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        sub = []
+        for i in nums:
+            if len(sub)==0 or sub[-1]<i:
+                sub.append(i)
+            else:
+                idx = bisect_left(sub, i) #==lowerbound(i) in c++ , T=O(logn)
+                sub[idx] = i
+            
+        return len(sub)
+## T=O(NlogN)
