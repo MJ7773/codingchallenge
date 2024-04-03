@@ -1,0 +1,60 @@
+//https://leetcode.com/problems/serialize-and-deserialize-binary-tree/description/
+
+
+/////////T=O(N)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+private:
+//DFS
+    void toString(TreeNode* root, ostringstream& treeStr){
+        if(!root){
+            treeStr << "N ";
+            return ;
+        }
+        treeStr << root->val <<" ";
+
+        toString(root->left, treeStr);
+        toString(root->right, treeStr);
+    }
+
+    TreeNode* toTree(istringstream& strTree){
+        string val = "";
+        strTree >> val; //parsing by space
+
+        if(val == "N") return NULL;
+
+        TreeNode* root = new TreeNode(stoi(val));
+
+        root->left = toTree(strTree);
+        root->right = toTree(strTree);
+
+        return root;
+    }
+
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        ostringstream treeStr;
+        toString(root, treeStr);
+        return treeStr.str();
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        istringstream strTree(data);
+        return toTree(strTree);
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
