@@ -1,0 +1,53 @@
+// https://leetcode.com/problems/implement-trie-prefix-tree/description/
+
+class TrieNode{
+public:
+    TrieNode *next[26]; //a~z
+    bool isWord;
+    TrieNode(){
+        isWord = false;
+        for(auto &n : next) n = nullptr;
+    }
+};
+
+class Trie {
+private:
+    TrieNode* root;
+
+public: 
+    Trie(){
+        root = new TrieNode();
+    }   
+    void insert(string word) {
+        TrieNode *node = root;
+        for(auto &c : word){
+            int i = c - 'a';
+            if(!node->next[i]) node->next[i] = new TrieNode();
+            node = node->next[i];
+        }
+        node->isWord = true;
+    }
+    
+    bool search(string word, bool prefix=false) {
+        TrieNode *node = root;
+        for(auto &c : word){
+            int i = c - 'a';
+            if(!node->next[i]) return false;
+            node = node->next[i];
+        }
+        if(prefix==false) return node->isWord;
+        return true;
+    }
+    
+    bool startsWith(string prefix) {
+        return search(prefix, true);
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
