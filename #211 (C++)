@@ -2,6 +2,7 @@
 
 // T=O(N)
 
+
 class TrieNode{
 public:
     map<char, TrieNode*> child;
