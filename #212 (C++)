@@ -1,0 +1,78 @@
+// https://leetcode.com/problems/word-search-ii/description/
+
+class TrieNode{
+public: 
+    TrieNode *children[26]; // a-z
+    bool isWord;
+
+    TrieNode(){
+        for(auto &i : children) i = nullptr;
+        isWord = false;
+    }
+};
+
+class Solution {
+private:
+    TrieNode *root = new TrieNode();
+    int m, n;
+
+    void insert(string word){
+        TrieNode *node = root;
+        
+        for(char c : word){
+            int i = c-'a'; // a-'a'=0
+            if(!node->children[i]) node->children[i] = new TrieNode();
+            node = node->children[i];
+        }
+        node->isWord = true;
+    }
+
+    void search(vector<vector<char>>& board, int i, int j, TrieNode *searching, string found, vector<string>&result){
+        if(i<0 || i>=m || j<0 || j>=n || board[i][j]=='#') return;
+
+        char c = board[i][j];
+
+        searching = searching->children[c-'a']; // move to the corresponding node
+        if(!searching) return; // return if the node not exists
+
+        found += board[i][j]; // append the char to the current word
+
+        if(searching->isWord){
+            result.push_back(found);
+            searching->isWord = false;
+        }
+        board[i][j] = '#'; // mark as it's already visited
+
+        search(board, i-1, j, searching, found, result);
+        search(board, i+1, j, searching, found, result);
+        search(board, i, j-1, searching, found, result);
+        search(board, i, j+1, searching, found, result);
+
+        board[i][j] = c;
+    }
+
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        for(auto word : words) insert(word);
+        // Store the target words as trie
+
+        m = board.size();
+        n = board[0].size();
+
+        TrieNode *node = root;
+        vector<string> result;
+
+        for(int i=0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                search(board, i, j, node, "", result); // apply dfs to each corresponding cell
+            }
+        }
+
+        return result;
+    }
+
+
+};
+
+// T = O(words + n(4^maxlenofword))
+// S = O(words + n)
