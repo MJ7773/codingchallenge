@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/group-anagrams/description/
+
+// T=O(N)
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> anagrams;
+
+        for(string s : strs){
+            string word = s;
+            sort(word.begin(), word.end());
+            anagrams[word].push_back(s);
+        }
+        
+        vector<vector<string>> ans;
+        for(auto set : anagrams) ans.push_back(set.second);
+
+        return ans;
+    }
+};
