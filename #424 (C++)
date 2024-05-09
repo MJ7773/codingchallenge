@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/longest-repeating-character-replacement/description/ 
+
+
+// T=O(n)
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int left=0, right=0;
+        unordered_map<char, int> c;
+        int maxfreq = 0;
+        int ans = 0;
+
+        for(right=0; right<s.size(); ++right){
+            ++c[s[right]];
+            maxfreq = max(maxfreq, c[s[right]]);
+
+            if((right-left+1)-maxfreq > k){
+                c[s[left]] -= 1;
+                ++left;
+            }
+            else ans = max(ans, (right-left)+1);
+        }
+        return ans;
+    }
+};
