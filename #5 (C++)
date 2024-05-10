@@ -1,7 +1,35 @@
 https://leetcode.com/problems/longest-palindromic-substring/submissions/
 
-//DP, T=S=O(n^2)
+// Expand around center
+// T=O(N^2), S=O(1)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.length() <= 1) return s;
 
+        auto expand_from_center = [&](int left, int right){
+            while(left>=0 && right<s.length() && s[left]==s[right]){
+                --left;
+                ++right;
+            }
+            return s.substr(left+1, right-left-1);
+        };
+
+        string maxPal = s.substr(0,1); // substr = O(n)
+        
+        for(int i=0; i<s.length()-1; ++i){ // consider all chars as a center
+            string odd = expand_from_center(i, i);
+            string even = expand_from_center(i, i+1); 
+            // if the string has even number of chars then regard the two chars as a center
+
+            if(odd.length() > maxPal.length()) maxPal = odd;
+            if(even.length() > maxPal.length()) maxPal = even;
+        }
+        return maxPal;
+    }
+};
+
+//DP, T=S=O(n^2), S=O(n^2)
 class Solution {
 public:
     string longestPalindrome(string s) {
@@ -16,10 +44,10 @@ public:
          
         for(int i=1; i<len; ++i){
             for(int j=i-1; j>=0; --j){
-                if(s[j]==s[i]){
-                    if(i-j==1 || dp[j+1][i-1]==true){
-                        dp[j][i]=true;
-                        if(i-j+1 > ans.size()) ans = s.substr(j, i-j+1); 
+                if(s[i] == s[j]){
+                    if(i-j==1 || dp[i-1][j+1]){
+                        dp[i][j] = true;
+                        if(i-j+1 > longestPal.size()) longestPal = s.substr(j, i-j+1);
                     } 
                 }
             }
