@@ -9,7 +9,7 @@ public:
 
         int maxlen = 1;
         string maxstr = s.substr(0,1);
-        s = "#" + regex_replace(s, regex(""), "#") + "#";
+        s = regex_replace(s, regex(""), "#");
         vector<int> dp(s.size(), 0);
         int center = 0; // the center index of the current palindrome
         int right = 0; // the rightmost index of the current palindrome
