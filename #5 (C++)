@@ -1,6 +1,6 @@
 https://leetcode.com/problems/longest-palindromic-substring/submissions/
 
-//
+// Manacher's Algorithm
 // T=O(N)
 class Solution {
 public:
