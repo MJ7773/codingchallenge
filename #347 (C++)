@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/top-k-frequent-elements/description/
+
+// Heap, T=O(nlogk)
+class Solution {
+private:
+    struct compare{
+        bool operator()(const pair<int,int>&a, const pair<int,int>&b){
+            return a.second < b.second;
+        }
+    };
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> m;
+        for(int i : nums) ++m[i];
+
+        priority_queue<pair<int,int>, vector<pair<int,int>>, compare> pq(m.begin(), m.end());
+
+        vector<int> ans;
+        while(k--){
+            ans.push_back(pq.top().first);
+            pq.pop();
+        }
+        return ans;
+    }
+};
