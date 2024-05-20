@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/merge-intervals/description/
+
+// T=O(nlogn) , S=O(n)
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        if(intervals.size()==1) return intervals;
+
+        sort(intervals.begin(),intervals.end()); //O(nlogn)
+
+        vector<vector<int>> merged;
+        vector<int> interval = intervals[0];
+        for(int i=1; i<intervals.size(); ++i){
+            if(intervals[i][0] <= interval[1]) interval = {min(interval[0], intervals[i][0]), max(interval[1], intervals[i][1])};
+            else{
+                merged.push_back(interval);
+                interval = intervals[i];
+            }
+        }
+        merged.push_back(interval);
+        return merged;
+    }
+};
