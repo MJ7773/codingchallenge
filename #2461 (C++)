@@ -1,31 +1,37 @@
 // https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/description/
+// T=O(n) , S=O(1)
 
 class Solution {
 public:
     long long maximumSubarraySum(vector<int>& nums, int k) {
         long long maxSum = 0;
         long long localSum = 0;
-        int seen[100001] = {};
-        
+        int seen[100001] = {}; // Better to use array than Hash Table when the range is provided
+
         unordered_set<int> dupes;
-        
+
         for(int i=0; i<k; ++i){
             int n = nums[i];
             localSum += n;
             ++seen[n];
-            if(seen[n] == 2) dupes.insert(n);
+            if(seen[n] == 2) dupes.insert(n);    
         }
-        if(dupes.size()==0) maxSum = localSum;
 
-        for(int i=k,j=0; i<nums.size(); ++i, ++j){
-            int n = nums[i], m = nums[j];
+        if(dupes.empty()) maxSum = localSum;
+
+        for(int i=k,j=0; i<nums.size(); ++i,++j){
+            int n = nums[i];
+            int m = nums[j];
             localSum += n-m;
-            ++seen[n];
-            if(seen[n] == 2) dupes.insert(n);
+
             --seen[m];
             if(seen[m] == 1) dupes.erase(m);
-            if(!dupes.size()) maxSum = max(maxSum, localSum);
+            ++seen[n];
+            if(seen[n] == 2) dupes.insert(n);
+
+            if(dupes.empty()) maxSum = max(maxSum, localSum);
         }
+
         return maxSum;
     }
 };
