@@ -1,0 +1,55 @@
+//https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/description/
+
+// Approach : Sliding Window
+// T=O(N), S=O(1)
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
+        int ans=0;
+
+        int freq[26] = {0}; // 26 alphabets
+        int len = s.size();
+
+
+        // count frequencies of all letters
+        for(int i=0; i<len; ++i){
+            ++freq[s[i] - 'a'];
+        }
+        //count the number of unique chars
+        int unique = 0;
+        for(int i=0; i<26; ++i){
+            if(freq[i] > 0 ) ++unique;
+        }
+
+        // looping over [1, unique]
+        for(int curr_unique=1; curr_unique<=unique; ++curr_unique){
+            memset(freq, 0, sizeof(freq)); // reset freq
+
+            int start=0, end=0; // window idx
+            int cnt_unique=0, cnt_k=0;
+
+            while(end < len){
+                if(cnt_unique <= curr_unique){
+                    int idx = s[end] - 'a';
+
+                    if(freq[idx] == 0) ++cnt_unique; // new unique char
+                    ++freq[idx];
+
+                    if(freq[idx] == k) ++cnt_k;
+                    ++end;
+                }
+                else{
+                    int idx = s[start] - 'a';
+                    if(freq[idx] == k) --cnt_k;
+                    --freq[idx];
+
+                    if(freq[idx] == 0) --cnt_unique;
+                    ++start;
+                }
+
+                if(cnt_unique==curr_unique && cnt_k==curr_unique) ans = max(ans, end-start);
+            }
+        }
+        return ans;
+    }        
+};
