@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/find-all-anagrams-in-a-string/description/
+
+// Approach: Sliding Window
+// T=O(N), S=O(1)
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int pLen = p.size();
+        if(s.size() < pLen) return {};
+
+        int needed = 0, freq[26] = {0};
+        for(char c : p){ // count char frequency of p
+            if(freq[c-'a']++ == 0) ++needed;
+        }
+
+        int front=0, rear=0, window=rear-front+1;
+        int filled=0, cnt[26]={0};
+        vector<int> ans;
+
+        while(rear < s.size()){
+            if(window <= pLen){
+                if(++cnt[s[rear]-'a'] == freq[s[rear]-'a']){
+                    if(++filled == needed){
+                        if(window == pLen) ans.push_back(front);
+                    }
+                }
+                ++rear;
+            }
+            else{
+                if(cnt[s[front]-'a']-- == freq[s[front]-'a']) --filled;
+                ++front;
+            }
+            window = rear-front+1;
+        }
+
+        return ans;
+    }
+};
