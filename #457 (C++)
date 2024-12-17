@@ -1,35 +1,37 @@
 // https://leetcode.com/problems/circular-array-loop/description/
 // T=O(n), S=O(1)
+// Two Pointer approach
 
 class Solution {
 public:
-
-    // Next Index Calculation
-    int next(vector<int>& nums, int i){
-        int n = nums.size();
-        return ( (i+nums[i]%n) + n) %n;
+    int next(const vector<int>& nums, int n, int i){
+        return (((i+nums[i])%n)+n)%n;
+        // i + nums[i]: calculate index
         // nums[i] % n: Ensures the index wraps around within the bounds of the array size
-        // i + nums[i]%n : calculate index
         // ((i+nums[i]%n) + n) : make sure the calculated index is not negative
         // ((i+nums[i]%n) + n) %n : wraps aroudn the index
     }
+
     bool circularArrayLoop(vector<int>& nums) {
         int n = nums.size();
+
+        // check for all the elements in the arr
+        // bc there could exists multiple cycles
         for(int i=0; i<n; ++i){
             int slow = i;
-            int fast = next(nums, i);
+            int fast = next(nums, n, i);
 
-            // check if current move is in the same dir && will be the same dir
-            while( nums[slow] * nums[fast] > 0 && nums[slow] * nums[next(nums, fast)] > 0){
-                if( slow ==  fast){
-                    if(slow != next(nums, slow)) return true;
+            // check if the current move is in the same dir
+            // && will be the same dir (bc fast will skip this node)
+            while( (nums[slow]*nums[fast] > 0) && (nums[slow]*nums[next(nums, n, fast)] > 0) ){
+                if(slow == fast){
+                    if(slow != next(nums, n, slow)) return true;
                     break;
                 }
-                slow = next(nums, slow);
-                fast = next(nums, next(nums,fast));
+                slow = next(nums, n, slow);
+                fast = next(nums, n, next(nums, n, fast));
             }
         }
         return false;
     }
-
 };
