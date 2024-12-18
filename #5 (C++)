@@ -71,25 +71,27 @@ public:
 class Solution {
 public:
     string longestPalindrome(string s) {
+        if(s.size() < 2) return s;
+
         int len = s.size();
-        bool dp[len][len]; // dp[i][j]='true' if the string from index i to j is a palindrome.
+        bool dp[len][len];
         memset(dp, 0, sizeof(dp));
-        
-        string ans="";
-        ans += s[0];
-        
+
+        string res="";
+        res += s[0];
+
         for(int i=0; i<len; ++i) dp[i][i] = true;
-         
+        
         for(int i=1; i<len; ++i){
             for(int j=i-1; j>=0; --j){
-                if(s[i] == s[j]){
-                    if(i-j==1 || dp[i-1][j+1]){
-                        dp[i][j] = true;
-                        if(i-j+1 > longestPal.size()) longestPal = s.substr(j, i-j+1);
-                    } 
+                if(s[j] == s[i]){
+                    if(i-j==1 || dp[j+1][i-1]){
+                        dp[j][i] = true;
+                        if(i-j+1 > res.size()) res = s.substr(j, i-j+1);
+                    }
                 }
             }
         }
-        return ans;
+        return res;
     }
 };
