@@ -8,8 +8,11 @@ public:
         if(s.size() <= 1) return s;
 
         int maxlen = 1;
-        string maxstr = s.substr(0,1);
-        s = regex_replace(s, regex(""), "#");
+        string maxStr = s.substr(0,1); // O(substr) = O(n)
+
+        // O(regex_replace) = O(n*m) == O(n), add # to make s.size() == even
+        s = "#" + regex_replace(s, regex(""), "#") + "#"; 
+
         vector<int> dp(s.size(), 0);
         int center = 0; // the center index of the current palindrome
         int right = 0; // the rightmost index of the current palindrome
@@ -22,21 +25,20 @@ public:
                 // if the left == right
                 ++dp[i];
             }
-
-            if(i+dp[i] > right){
+            if(i+dp[i] > right){ // renew the longest palindrome
                 center = i;
                 right = i+dp[i];
             }
-
             if(dp[i] > maxlen){
                 maxlen = dp[i];
-                maxstr = s.substr(i-dp[i], 2*dp[i]+1);
+                maxStr = s.substr(i-dp[i], 2*dp[i]+1);
             }
         }
-        maxstr.erase(remove(maxstr.begin(), maxstr.end(), '#'), maxstr.end());
-        return maxstr;
+        maxStr.erase(remove(maxStr.begin(), maxStr.end(), '#'), maxStr.end());
+        return maxStr;
     }
 };
+
 
 // Expand around center
 // T=O(N^2), S=O(1)
