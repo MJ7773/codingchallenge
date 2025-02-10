@@ -17,7 +17,7 @@ public:
         long long t = tasks[0][0]; // current time
 
         while(!pq.empty() || i<n) {
-            while(i<n && t>=tasks[i][0]) {
+            while(i<n && tasks[i][0]<=t) {
                 pq.push({tasks[i][1], tasks[i][2]});
                 ++i;
             }
