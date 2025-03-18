@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/consecutive-characters/description/?utm_source=chatgpt.com
+
+// T=O(1)
+class Solution {
+public:
+    int maxPower(string s) {
+        int globalPower = 1;
+        int localPower = 1;
+
+        for(int i=1; i<s.size(); ++i){
+            if(s[i] == s[i-1]) ++localPower;
+            else{
+                globalPower = max(globalPower, localPower);
+                localPower = 1;
+            } 
+        }
+        return max(globalPower, localPower);
+    }
+};
