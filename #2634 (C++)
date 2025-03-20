@@ -1,5 +1,6 @@
 // https://leetcode.com/problems/filter-elements-from-array/description/
 
+// T=O(n)
 /**
  * @param {number[]} arr
  * @param {Function} fn
