@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/consecutive-numbers-sum/description/?utm_source=chatgpt.com
+
+// N = x + (x+1) + (x+2) + (x+3) + ... + (x+(k-1)) = sum of numbers k times increasing from x
+// N = (k*x) + (1+2+3+4+...+(k-1))
+// N = (k*x) + {k*(k-1)/2}
+// We need to find k & x
+// => starting from 1, increasing k and find if x is integer
+// => : x = (n - (k * (k - 1) / 2)) / k
+
+
+class Solution {
+public:
+    int consecutiveNumbersSum(int n) {
+        int cnt = 0;
+        int k = 1; // #. consecutive number
+
+        while( (k*(k-1)/2) < n ) {
+            int remainder = n - (k*(k-1))/2;
+            if(remainder % k == 0) ++cnt;
+            ++k;
+        }
+        return cnt;
+    }
+};
