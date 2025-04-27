@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/reverse-nodes-in-k-group/description/
+
+// T=O(N), S=O(1)
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode* prev = new ListNode(0, head);
+        ListNode* reversed = prev;
+        
+        while(1) {
+            ListNode* node = prev;
+
+            for(int i=0; i<k && node; ++i) node = node->next;
+            if(!node) return reversed->next;
+
+            ListNode* curr = prev->next;
+            for(int i=1; i<k; ++i) {
+                ListNode* temp = prev->next;
+                prev->next = curr->next;
+                curr->next = curr->next->next;
+                prev->next->next = temp;
+            }
+            prev = curr;
+        }
+        return reversed->next;
+    }
+};
